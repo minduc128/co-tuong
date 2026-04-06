@@ -1,0 +1,140 @@
+package GameLogic;
+
+import GameLogic.Pieces.Piece;
+
+public class Move {
+    private Piece piece;
+    private Piece capturedPiece;
+
+    private int originX;
+    private int originY;
+    private int finalX;
+    private int finalY;
+
+
+    private int dx;
+    private int dy;
+    private boolean isHorizontal;
+    private boolean isVertical;
+    private boolean isDiagonal;
+    private boolean isValid;
+    private int numObstacles;
+
+    public Move(int originX, int originY, int finalX, int finalY) {
+        this.originX = originX;
+        this.originY = originY;
+        this.finalX = finalX;
+        this.finalY = finalY;
+
+        this.dx = finalX - originX;
+        this.dy = finalY - originY;
+        if (dx == 0 && dy != 0) {
+            this.isVertical = true;
+        }
+        if (dy == 0 && dx != 0) {
+            this.isHorizontal = true;
+        }
+        if (Math.abs(dx) == Math.abs(dy) && dx != 0) {
+            this.isDiagonal = true;
+        }
+
+    }
+
+    public Move(Piece piece, int originX, int originY, int finalX, int finalY) {
+        this.piece = piece;
+        this.originX = originX;
+        this.originY = originY;
+        this.finalX = finalX;
+        this.finalY = finalY;
+
+        this.dx = finalX - originX;
+        this.dy = finalY - originY;
+        if (dx == 0 && dy != 0) {
+            this.isVertical = true;
+        }
+        if (dy == 0 && dx != 0) {
+            this.isHorizontal = true;
+        }
+        if (Math.abs(dx) == Math.abs(dy) && dx != 0) {
+            this.isDiagonal = true;
+        }
+    }
+
+    public Move(Piece piece, Piece capturedPiece, int originX, int originY, int finalX, int finalY) {
+
+        this.piece = piece;
+        this.capturedPiece = capturedPiece;
+        this.originX = originX;
+        this.originY = originY;
+        this.finalX = finalX;
+        this.finalY = finalY;
+
+        this.dx = finalX - originX;
+        this.dy = finalY - originY;
+        if (dx == 0 && dy != 0) {
+            this.isVertical = true;
+        }
+        if (dy == 0 && dx != 0) {
+            this.isHorizontal = true;
+        }
+        if (Math.abs(dx) == Math.abs(dy) && dx != 0) {
+            this.isDiagonal = true;
+        }
+    }
+
+    public int getOriginX() {
+        return originX;
+    }
+
+    public int getOriginY() {
+        return originY;
+    }
+
+    public int getFinalX() {
+        return finalX;
+    }
+
+    public int getFinalY() {
+        return finalY;
+    }
+
+    public int getDx() {
+        return dx;
+    }
+
+    public int getDy() {
+        return dy;
+    }
+
+    public boolean isHorizontal() {
+        return isHorizontal;
+    }
+
+    public boolean isVertical() {
+        return isVertical;
+    }
+
+    public boolean isDiagonal() {
+        return isDiagonal;
+    }
+
+    boolean isValid() {
+        return isValid;
+    }
+
+    public void setValid(boolean v) {
+        this.isValid = v;
+    }
+
+    public Piece getPiece() {
+        return piece;
+    }
+
+    public Piece getCapturedPiece() {
+        return capturedPiece;
+    }
+
+    public String toString() {
+        return originX + ", " + originY + ", " + finalX + ", " + finalY;
+    }
+}
