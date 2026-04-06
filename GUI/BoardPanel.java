@@ -82,19 +82,6 @@ public class BoardPanel extends JPanel {
 					getWidth(), getHeight(), new Color(183, 144, 92));
 			g2.setPaint(paint);
 			g2.fillRect(0, 0, getWidth(), getHeight());
-
-			g2.setColor(new Color(255, 255, 255, 95));
-			g2.fillRoundRect(20, 20, getWidth() - 40, getHeight() - 40, 28, 28);
-			g2.setColor(new Color(102, 72, 35, 150));
-			g2.setStroke(new BasicStroke(2f));
-			g2.drawRoundRect(20, 20, getWidth() - 40, getHeight() - 40, 28, 28);
-
-			g2.setColor(new Color(96, 58, 20, 185));
-			g2.setFont(new Font("Sans_Serif", Font.BOLD, 20));
-			g2.drawString("Background placeholder", 40, getHeight() - 72);
-			g2.setFont(new Font("Sans_Serif", Font.PLAIN, 15));
-			g2.drawString("Dat anh tai: " + GAME_BACKGROUND_PATH, 40, getHeight() - 44);
-			g2.drawString("Thu muc that: Pictures\\game_background.png", 40, getHeight() - 20);
 		}
 
 		g2.setColor(new Color(255, 248, 230, 105));
