@@ -30,8 +30,31 @@ public class Board {
 
     }
 
+    public Board(Board other) {
+        gBoard = new Point[10][9];
+        for (int y = 0; y < 10; y++) {
+            for (int x = 0; x < 9; x++) {
+                gBoard[y][x] = new Point(x, y);
+                Piece piece = other.getPoint(x, y).getPiece();
+                if (piece != null) {
+                    gBoard[y][x].setPiece(copyPiece(piece));
+                }
+            }
+        }
+        this.upGeneralX = other.upGeneralX;
+        this.upGeneralY = other.upGeneralY;
+        this.downGeneralX = other.downGeneralX;
+        this.downGeneralY = other.downGeneralY;
+        this.upCheck = other.upCheck;
+        this.downCheck = other.downCheck;
+    }
+
     public boolean isMoveLegalPreview(Move move) {
         return new MoveTester(this, move).isLegal();
+    }
+
+    public Board copy() {
+        return new Board(this);
     }
 
     public boolean isMoveLegalForSidePreview(Move move, Piece.Side side) {
@@ -362,6 +385,31 @@ public class Board {
 
     public Point getPoint(int x, int y) {
         return gBoard[y][x];
+    }
+
+    private Piece copyPiece(Piece piece) {
+        if (piece instanceof Chariot) {
+            return new Chariot(piece.getSide());
+        }
+        if (piece instanceof Cannon) {
+            return new Cannon(piece.getSide());
+        }
+        if (piece instanceof Horse) {
+            return new Horse(piece.getSide());
+        }
+        if (piece instanceof Elephant) {
+            return new Elephant(piece.getSide());
+        }
+        if (piece instanceof Guard) {
+            return new Guard(piece.getSide());
+        }
+        if (piece instanceof General) {
+            return new General(piece.getSide());
+        }
+        if (piece instanceof Soldier) {
+            return new Soldier(piece.getSide());
+        }
+        throw new IllegalArgumentException("Unsupported piece type: " + piece.getClass().getName());
     }
 
     int getUpGeneralX() {

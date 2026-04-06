@@ -118,7 +118,8 @@ public class TurnTimerPanel extends JPanel {
         this.add(statusPanel, BorderLayout.CENTER);
         this.add(capturedPanel, BorderLayout.SOUTH);
 
-        this.setPreferredSize(new Dimension(200, 0));
+        this.setPreferredSize(new Dimension(220, 320));
+        this.setMinimumSize(new Dimension(220, 320));
         refreshCapturedPieces();
 
     }
@@ -130,10 +131,13 @@ public class TurnTimerPanel extends JPanel {
 
         newThread = new Thread(() -> {
             while (redPlayer.isTimerRunning()) {
-
-                redTimerLabel.setText(redPlayer.elapsedTimeToString(timeLimit));
-
-
+                SwingUtilities.invokeLater(() -> redTimerLabel.setText(redPlayer.elapsedTimeToString(timeLimit)));
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
             }
         });
 
@@ -148,7 +152,13 @@ public class TurnTimerPanel extends JPanel {
 
         newThread = new Thread(() -> {
             while (blackPlayer.isTimerRunning()) {
-                blackTimerLabel.setText(blackPlayer.elapsedTimeToString(timeLimit));
+                SwingUtilities.invokeLater(() -> blackTimerLabel.setText(blackPlayer.elapsedTimeToString(timeLimit)));
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
             }
         });
 

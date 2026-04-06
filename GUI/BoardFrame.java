@@ -14,6 +14,7 @@ public class BoardFrame extends JFrame {
 	private BoardPanel board;
 	private TurnTimerPanel timerPanel;
 	private JPanel sidePanel;
+	private JPanel actionPanel;
 	private CheckNotification checkNotification;
 
 	public BoardFrame(Core core) {
@@ -24,12 +25,17 @@ public class BoardFrame extends JFrame {
 		add(board, BorderLayout.CENTER);
 		checkNotification = new CheckNotification(this);
 
-		sidePanel = new JPanel();
-		sidePanel.setLayout(new GridLayout(2, 0, 0, 3));
-		sidePanel.add(timerPanel);
+		sidePanel = new JPanel(new BorderLayout(0, 8));
+		sidePanel.add(timerPanel, BorderLayout.NORTH);
         ChatBox chatBox = new ChatBox(core);
 		System.setOut(new PrintStream(new StreamIntake(chatBox, System.out)));
-		sidePanel.add(chatBox);
+		sidePanel.add(chatBox, BorderLayout.CENTER);
+
+		JButton rulesButton = new JButton("Luật chơi");
+		rulesButton.addActionListener(event -> RulesDialog.showRules(this));
+		actionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		actionPanel.add(rulesButton);
+		sidePanel.add(actionPanel, BorderLayout.SOUTH);
 		add(sidePanel, BorderLayout.EAST);
 
 		ActionListener saveHandler = new ActionListener() {
@@ -47,8 +53,11 @@ public class BoardFrame extends JFrame {
 		JPopupMenu popupMenu = new JPopupMenu();
 		JMenuItem popupSave = new JMenuItem("Save");
 		popupSave.addActionListener(saveHandler);
+		JMenuItem popupRules = new JMenuItem("Luật chơi");
+		popupRules.addActionListener(event -> RulesDialog.showRules(this));
 
 		popupMenu.add(popupSave);
+		popupMenu.add(popupRules);
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent event) {
 				checkForTriggerEvent(event); // check for trigger

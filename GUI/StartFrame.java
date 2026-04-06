@@ -33,6 +33,7 @@ public class StartFrame extends JFrame {
     private JButton p2Chooser;
     private JButton bgChooser;
     private JButton begin;
+    private JButton rulesButton;
     private JButton loadGame;
     private JButton fgChooser;
     private JButton lineChooser;
@@ -224,6 +225,8 @@ public class StartFrame extends JFrame {
         bottom = new JPanel(new FlowLayout(FlowLayout.CENTER));
         begin = new JButton("Start New Game");
         begin.setFont(new Font("Sans_Serif", Font.BOLD, 18));
+        rulesButton = new JButton("Luật chơi");
+        rulesButton.setFont(new Font("Sans_Serif", Font.BOLD, 18));
         loadGame = new JButton("Load Game");
         loadGame.setEnabled(false);
 
@@ -233,6 +236,7 @@ public class StartFrame extends JFrame {
         JPanel beginPanel = new JPanel();
         beginPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
         beginPanel.add(begin, CENTER_ALIGNMENT);
+        beginPanel.add(rulesButton, CENTER_ALIGNMENT);
 
         bottom.add(previewPanel);
         bottom.add(beginPanel);
@@ -313,6 +317,13 @@ public class StartFrame extends JFrame {
                 boardFrame.setSize(900, 700);
                 boardFrame.setVisible(true);
                 setVisible(false);
+            }
+        });
+
+        rulesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                RulesDialog.showRules(StartFrame.this);
             }
         });
 

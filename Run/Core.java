@@ -120,17 +120,22 @@ public class Core {
 
     private void scheduleComputerMove() {
         aiThinking = true;
-        Timer timer = new Timer(COMPUTER_MOVE_DELAY_MS, event -> {
-            ((Timer) event.getSource()).stop();
-            playComputerTurn();
-        });
-        timer.setRepeats(false);
-        timer.start();
+        Thread aiThread = new Thread(() -> {
+            try {
+                Thread.sleep(COMPUTER_MOVE_DELAY_MS);
+                Move computerMove = bot.chooseMove(board.copy(), player2.getPlayerSide(), botDifficulty);
+                SwingUtilities.invokeLater(() -> applyComputerMove(computerMove));
+            } catch (InterruptedException e) {
+                SwingUtilities.invokeLater(() -> aiThinking = false);
+                Thread.currentThread().interrupt();
+            }
+        }, "computer-move-thread");
+        aiThread.setDaemon(true);
+        aiThread.start();
     }
 
-    private void playComputerTurn() {
+    private void applyComputerMove(Move computerMove) {
         try {
-            Move computerMove = bot.chooseMove(board, player2.getPlayerSide(), botDifficulty);
             if (computerMove == null) {
                 if (board.isUpInCheck()) {
                     Board.setWinner(Board.PLAYER1_WINS);

@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Random;
 
 public class SimpleBot {
-    private static final int HARD_SEARCH_DEPTH = 3;
+    private static final int HARD_SEARCH_DEPTH = 2;
+    private static final int HARD_CANDIDATE_LIMIT = 8;
 
     public enum Difficulty {
         EASY,
@@ -146,10 +147,11 @@ public class SimpleBot {
     }
 
     private Move chooseBestMinimaxMove(Board board, List<Move> legalMoves, Piece.Side side) {
+        List<Move> candidateMoves = selectTopCandidateMoves(board, legalMoves, side);
         List<Move> bestMoves = new ArrayList<>();
         int bestScore = Integer.MIN_VALUE;
 
-        for (Move move : legalMoves) {
+        for (Move move : candidateMoves) {
             Piece captured = board.getPoint(move.getFinalX(), move.getFinalY()).getPiece();
             board.doMove(move);
             board.updateGenerals();
@@ -168,6 +170,32 @@ public class SimpleBot {
         }
 
         return bestMoves.get(random.nextInt(bestMoves.size()));
+    }
+
+    private List<Move> selectTopCandidateMoves(Board board, List<Move> legalMoves, Piece.Side side) {
+        List<Move> candidates = new ArrayList<>();
+        List<Integer> scores = new ArrayList<>();
+
+        for (Move move : legalMoves) {
+            int score = scoreMediumMove(board, move, side) + scoreMove(board, move, side);
+            int insertIndex = 0;
+            while (insertIndex < scores.size() && score <= scores.get(insertIndex)) {
+                insertIndex++;
+            }
+
+            candidates.add(insertIndex, move);
+            scores.add(insertIndex, score);
+
+            if (candidates.size() > HARD_CANDIDATE_LIMIT) {
+                candidates.remove(candidates.size() - 1);
+                scores.remove(scores.size() - 1);
+            }
+        }
+
+        if (candidates.isEmpty()) {
+            return legalMoves;
+        }
+        return candidates;
     }
 
     private int minimax(Board board, Piece.Side currentSide, Piece.Side maximizingSide, int depth, int alpha, int beta) {
